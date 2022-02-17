@@ -12,7 +12,7 @@ import argparse
 import time
 
 
-def pose_esitmation(frame, aruco_dict_type, matrix_coefficients, distortion_coefficients):
+def pose_estimation(frame, aruco_dict_type, matrix_coefficients, distortion_coefficients):
 
     '''
     frame - Frame from the video stream
@@ -43,7 +43,11 @@ def pose_esitmation(frame, aruco_dict_type, matrix_coefficients, distortion_coef
 
             # Draw Axis
             cv2.aruco.drawAxis(frame, matrix_coefficients, distortion_coefficients, rvec, tvec, 0.01)  
-
+            
+            x = (corners[i-1][0][0][0] + corners[i-1][0][1][0] + corners[i-1][0][2][0] + corners[i-1][0][3][0]) / 4
+            y = (corners[i-1][0][0][1] + corners[i-1][0][1][1] + corners[i-1][0][2][1] + corners[i-1][0][3][1]) / 4
+            
+            print (ids[i], x, y)
     return frame
 
 if __name__ == '__main__':
@@ -75,7 +79,7 @@ if __name__ == '__main__':
         if not ret:
             break
         
-        output = pose_esitmation(frame, aruco_dict_type, k, d)
+        output = pose_estimation(frame, aruco_dict_type, k, d)
 
         cv2.imshow('Estimated Pose', output)
 
